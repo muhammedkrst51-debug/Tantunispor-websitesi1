@@ -1,38 +1,43 @@
-// Konfeti Efekti
+// Konfeti efekti
 function createConfetti() {
     const container = document.getElementById('confetti-container');
-    const confettiPieces = 100;
+    const colors = ['#FFD700', '#FFA500', '#FF6347', '#00FF00', '#0000FF', '#FF1493'];
     
-    for (let i = 0; i < confettiPieces; i++) {
+    for (let i = 0; i < 100; i++) {
         const confetti = document.createElement('div');
         confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.width = Math.random() * 10 + 5 + 'px';
+        confetti.style.height = Math.random() * 10 + 5 + 'px';
+        confetti.style.opacity = Math.random() * 0.7 + 0.3;
         
-        const randomLeft = Math.random() * 100;
-        const randomDelay = Math.random() * 0.5;
-        const randomDuration = 2 + Math.random() * 1;
-        const randomRotation = Math.random() * 360;
-        const randomColor = ['#FFD700', '#FFA500', '#FF6F00', '#FF0000', '#00FF00', '#0000FF', '#FF69B4'][Math.floor(Math.random() * 7)];
+        const duration = Math.random() * 2 + 2;
+        const delay = Math.random() * 0.5;
         
-        confetti.style.left = randomLeft + '%';
-        confetti.style.backgroundColor = randomColor;
-        confetti.style.animation = `fall ${randomDuration}s linear ${randomDelay}s forwards`;
-        confetti.style.transform = `rotate(${randomRotation}deg)`;
-        
+        confetti.style.animation = `fall ${duration}s linear ${delay}s forwards`;
         container.appendChild(confetti);
+        
+        setTimeout(() => {
+            confetti.remove();
+        }, (duration + delay) * 1000);
     }
-    
-    // CSS animasyonu
-    const style = document.createElement('style');
-    style.innerHTML = `
-        @keyframes fall {
-            to {
-                transform: translateY(100vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
-    `;
-    document.head.appendChild(style);
 }
+
+// Konfeti düşme animasyonu
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fall {
+        to {
+            transform: translateY(100vh) rotate(360deg);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(style);
+
+// Sayfa yüklendiğinde konfeti başlat
+window.addEventListener('load', createConfetti);
 
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -91,8 +96,6 @@ window.addEventListener('load', function() {
 // Page load animation
 window.addEventListener('load', function() {
     document.body.style.opacity = '1';
-    // Sayfa yüklendiğinde konfeti efektini başlat
-    createConfetti();
 });
 
 document.body.style.opacity = '0';
